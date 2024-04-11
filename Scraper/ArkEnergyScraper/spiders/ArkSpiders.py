@@ -5,7 +5,7 @@ from scrapy_splash import SplashRequest
 # scraping based on keys words = "wind/rebate/...."
 # clean energy council / government run energy council / renewable economy
     
-class ExampleSpider(scrapy.Spider):
+class Spider1(scrapy.Spider):
     name = "example"
     allowed_domains = ["energymagazine.com.au"]
     start_urls = ["https://www.energymagazine.com.au/renewable-energy/"]
@@ -44,7 +44,7 @@ class ExampleSpider(scrapy.Spider):
         
         print(content)
     
-class ExampleSpider2(scrapy.Spider):
+class Spider2(scrapy.Spider):
     name = "example2"
     allowed_domains = ["reneweconomy.com.au"]
     start_urls = ["https://reneweconomy.com.au/all-articles/"]
@@ -72,11 +72,3 @@ class ExampleSpider2(scrapy.Spider):
             content += paragraph_text
 
         print(content)
-        
-def main():
-    process = CrawlerProcess()
-    process.crawl(ExampleSpider2)
-    process.start()
-    
-if __name__ == "__main__":
-    main()

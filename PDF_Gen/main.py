@@ -1,7 +1,6 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-
 def generate_pdf(file_name):
     # Create a canvas
     c = canvas.Canvas(file_name, pagesize=letter)
