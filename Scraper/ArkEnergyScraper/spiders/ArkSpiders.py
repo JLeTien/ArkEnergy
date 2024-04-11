@@ -14,6 +14,7 @@ class Spider1(scrapy.Spider):
         # Extracting information from post headers
         news = response.css('div.post')
         post_contents =  news.css('div.post-content')
+        slides_data = []
         
         # for post_content in post_contents:
         #     # Use XPath to select the <a> tag within the <div class="post-header">
@@ -63,7 +64,10 @@ class Spider2(scrapy.Spider):
        
     def parse_post(self, response):
         # Extract all paragraphs within the specified div
-        paragraphs = response.xpath('//div[contains(@class, "entry-content") and contains(@class, "wp-block-post-content") and contains(@class, "is-layout-flow") and contains(@class, "wp-block-post-content-is-layout-flow")]//p')
+        paragraphs = response.xpath('//div[contains(@class, "entry-content") '
+                                    'and contains(@class, "wp-block-post-content") '
+                                    'and contains(@class, "is-layout-flow") '
+                                    'and contains(@class, "wp-block-post-content-is-layout-flow")]//p')
         
         content = ''
 
