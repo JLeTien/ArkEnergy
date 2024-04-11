@@ -32,4 +32,4 @@ content.text = "Image Slide"
 #content_pic.add_picture(img_path, width=Inches(4), height=Inches(3))
 
 # Save the presentation
-prs.save("multiple_slides_presentation4.pptx")
+prs.save("multiple_slides_presentation.pptx")
