@@ -9,12 +9,12 @@ class Spider1(scrapy.Spider):
     name = "example"
     allowed_domains = ["energymagazine.com.au"]
     start_urls = ["https://www.energymagazine.com.au/renewable-energy/"]
+    slides_data = []
 
     def parse(self, response):
         # Extracting information from post headers
         news = response.css('div.post')
         post_contents =  news.css('div.post-content')
-        slides_data = []
         
         # for post_content in post_contents:
         #     # Use XPath to select the <a> tag within the <div class="post-header">
@@ -49,21 +49,22 @@ class Spider2(scrapy.Spider):
     name = "example2"
     allowed_domains = ["reneweconomy.com.au"]
     start_urls = ["https://reneweconomy.com.au/all-articles/"]
-
+    slides_data = []
+    
     def parse(self, response):
-        
         print("====================================================================")
         h2_element = response.css('h2.wp-block-post-title')
         for header in h2_element[:3]:
-            url = header.css('a::attr(href)').extract_first()
-            print("link: " + url)
+
+            title = header.css('h2.wp-block-post-title a::text').get()
             
-            yield SplashRequest(url, self.parse_post,
-                 args={'wait': 2})
+            url = header.css('a::attr(href)').extract_first()
+            # print("link: " + url)
+            
+            yield SplashRequest(url, self.parse_post, args={'wait': 2}, meta={'title': title})
         print("====================================================================")
        
     def parse_post(self, response):
-        # Extract all paragraphs within the specified div
         paragraphs = response.xpath('//div[contains(@class, "entry-content") '
                                     'and contains(@class, "wp-block-post-content") '
                                     'and contains(@class, "is-layout-flow") '
@@ -74,5 +75,9 @@ class Spider2(scrapy.Spider):
         for p in paragraphs:
             paragraph_text = p.xpath('string()').get().strip() 
             content += paragraph_text
-
-        print(content)
+        # print(content)
+        
+        title = response.meta['title']
+        self.slides_data.append({'title': title, 'content': content})
+        # print(self.slides_data)
+        
