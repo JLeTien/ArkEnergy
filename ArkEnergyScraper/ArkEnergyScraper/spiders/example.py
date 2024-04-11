@@ -7,59 +7,76 @@ from scrapy_splash import SplashRequest
     
 class ExampleSpider(scrapy.Spider):
     name = "example"
-    allowed_domains = ["energymagazine.com.au"]  # Removed the protocol and path
+    allowed_domains = ["energymagazine.com.au"]
     start_urls = ["https://www.energymagazine.com.au/renewable-energy/"]
-    
-    def start_requests(self):
-        for url in self.start_urls:
-            yield SplashRequest(url, self.parse,
-                args={'wait': 2})  # Adjust the wait time as needed
 
     def parse(self, response):
         # Extracting information from post headers
-        post_headers = response.css('div.post-header')
         news = response.css('div.post')
         post_contents =  news.css('div.post-content')
         
-        print("===========================================================================")
-        
-        for post_content in post_contents:
-            # Use XPath to select the <a> tag within the <div class="post-header">
-            a_tag = post_content.xpath('./div[@class="post-header"]/h3/a')
-            if a_tag:
-                text = a_tag.xpath('text()').extract_first()
-                print(text)
-            else:
-                print("No <a> tag found within the post-header.")
-        
-        print("===========================================================================")
-        
+        # for post_content in post_contents:
+        #     # Use XPath to select the <a> tag within the <div class="post-header">
+        #     a_tag = post_content.xpath('./div[@class="post-header"]/h3/a')
+        #     if a_tag:
+        #         text = a_tag.xpath('text()').extract_first()
+        #         print(text)
+        #     else:
+        #         print("No <a> tag found within the post-header.")
+
         post_headers = response.css('div.post-header')
-        for header in post_headers[:1]:
+        for header in post_headers[:3]:
             # Extracting the URL from the <a> tag within the post header
             url = header.css('h3.post-title.entry-title a::attr(href)').extract_first()
             print("link: " + url)
-            # yield scrapy.Request(url, callback=self.parse_post)
-            
+
+            # Need to use SpashRequest to handle dynamically rendered pages in JS
             yield SplashRequest(url, self.parse_post,
-                args={'wait': 2})  # Adjust the wait time as needed
-            
-        print("===========================================================================")
+                args={'wait': 2})
 
     def parse_post(self, response):
-        content = response.xpath('//div[@class="article-content"]/*[not(@class="addtoany_share_save_container addtoany_content addtoany_content_top")]').get()
+        paragraphs = response.xpath('//div[@class="article-content"]/p')
+        content = ''
+
+        for p in paragraphs:
+            paragraph_text = p.xpath('string()').get().strip() 
+            content += paragraph_text  
+        
+        print(content)
+    
+class ExampleSpider2(scrapy.Spider):
+    name = "example2"
+    allowed_domains = ["reneweconomy.com.au"]
+    start_urls = ["https://reneweconomy.com.au/all-articles/"]
+
+    def parse(self, response):
+        
+        print("====================================================================")
+        h2_element = response.css('h2.wp-block-post-title')
+        for header in h2_element[:3]:
+            url = header.css('a::attr(href)').extract_first()
+            print("link: " + url)
+            
+            yield SplashRequest(url, self.parse_post,
+                 args={'wait': 2})
+        print("====================================================================")
+       
+    def parse_post(self, response):
+        # Extract all paragraphs within the specified div
+        paragraphs = response.xpath('//div[contains(@class, "entry-content") and contains(@class, "wp-block-post-content") and contains(@class, "is-layout-flow") and contains(@class, "wp-block-post-content-is-layout-flow")]//p')
+        
+        content = ''
+
+        for p in paragraphs:
+            paragraph_text = p.xpath('string()').get().strip() 
+            content += paragraph_text
 
         print(content)
         
-        # yield {
-        #     'title': title,
-        #     'content': content
-        # }
-
 def main():
     process = CrawlerProcess()
-    process.crawl(ExampleSpider)
-    process.start()  # the script will block here until the crawling is finished
-
+    process.crawl(ExampleSpider2)
+    process.start()
+    
 if __name__ == "__main__":
     main()
