@@ -30,16 +30,15 @@ def generate_ppt(slides_data):
 
 def main():
     process = CrawlerProcess()
-    process.crawl(Spider2)
+    process.crawl(Spider1)
     process.start()
     
     # After the crawling process has finished, you can access the slides_data attribute
-    slides_data = Spider2.slides_data
-
+    slides_data = Spider1.slides_data
+    
     # Now you can use the slides_data list as needed
     print(slides_data)
     generate_ppt(slides_data)
-
-
+    
 if __name__ == "__main__":
     main()

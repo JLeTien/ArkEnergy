@@ -28,12 +28,14 @@ class Spider1(scrapy.Spider):
         post_headers = response.css('div.post-header')
         for header in post_headers[:3]:
             # Extracting the URL from the <a> tag within the post header
+            title = header.css('h3.post-title.entry-title a::text').extract_first()
+            # print("title:" + title)
+            
             url = header.css('h3.post-title.entry-title a::attr(href)').extract_first()
-            print("link: " + url)
+            # print("link: " + url)
 
             # Need to use SpashRequest to handle dynamically rendered pages in JS
-            yield SplashRequest(url, self.parse_post,
-                args={'wait': 2})
+            yield SplashRequest(url, self.parse_post, args={'wait': 2}, meta={'title': title})
 
     def parse_post(self, response):
         paragraphs = response.xpath('//div[@class="article-content"]/p')
@@ -43,7 +45,9 @@ class Spider1(scrapy.Spider):
             paragraph_text = p.xpath('string()').get().strip() 
             content += paragraph_text  
         
-        print(content)
+        title = response.meta['title']
+        self.slides_data.append({'title': title, 'content': content})
+        # print(content)
     
 class Spider2(scrapy.Spider):
     name = "example2"
