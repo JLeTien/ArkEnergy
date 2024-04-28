@@ -9,12 +9,6 @@ from pptx.util import Inches
 import os
 
 def slide1(prs):
-    # Set background image
-    image_path = "background_image.jpg"  # Path to your image file
-    left = top = Inches(0)
-    width = height = Inches(10)
-    slide.shapes.add_picture(image_path, left, top, width=width, height=height)
-
     # Slide 1: Title slide
     slide_layout = prs.slide_layouts[0]
     slide = prs.slides.add_slide(slide_layout)
