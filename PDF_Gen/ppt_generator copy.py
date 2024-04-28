@@ -9,17 +9,17 @@ slide = prs.slides.add_slide(slide_layout)
 title = slide.shapes.title
 title.text = "ARK Energy"
 
-# img1 = "180degreelogo.png"
+img1 = "180degreelogo.png"
 from_left = Inches(7.3)
 from_top = Inches(6.5)
 length = Inches(2)
-# add_picture = slide.shapes.add_picture(img1, from_left, from_top, length)
+add_picture = slide.shapes.add_picture(img1, from_left, from_top, length)
 
-# img2 = "Arkenergylogo.png"
+img2 = "Arkenergylogo.png"
 from_left = Inches(5)
 from_top = Inches(6.5)
 length = Inches(2)
-# add_picture = slide.shapes.add_picture(img2, from_left, from_top, length)
+add_picture = slide.shapes.add_picture(img2, from_left, from_top, length)
 
 # Slide 2: Content slide with bullet points
 slide_layout = prs.slide_layouts[1]  # Content slide layout
@@ -37,10 +37,3 @@ slide_layout = prs.slide_layouts[1]  # Content slide layout
 slide = prs.slides.add_slide(slide_layout)
 title = slide.shapes.title
 title.text = "Content Slide 2"
-
-
-# Save the presentation
-prs.save("multiple_slides_presentation.pptx")
-
-
-
