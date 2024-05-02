@@ -26,7 +26,7 @@ current_datetime = datetime.now().strftime("%Y-%m-%d")
 # to generate time stamps use formating "%H:%M:%S" 
 current_time.text = f"Generated at: {current_datetime}"
 
-img1 = "180logo.png"
+img1 = "180degreeslogo.png"
 from_left = Inches(7.456)
 from_top = Inches(6.5)
 length = Inches(2)
@@ -136,21 +136,182 @@ slide_layout = prs.slide_layouts[5]  # Content slide layout
 slide2 = prs.slides.add_slide(slide_layout)
 title2 = slide2.shapes.title
 title2.text = "Key Commodities"
+# Main Table 
+x, y, cx, cy = Inches(2), Inches(2), Inches(4), Inches(1.5)
+ammonia = slide2.shapes.add_table(8, 2, x, y, cx, cy)
+ammonia
+ammonia.has_table 
+ammonia_table = ammonia.table
+ammonia_table
+# Title of table 
+cell = ammonia_table.cell(0, 0)
+cell.text
+cell.text = 'Ammonia'
+# Merging cells 
+merge_cell_ammonia = ammonia_table.cell(0, 0)
+other_cell_title = ammonia_table.cell(0, 1)
+merge_cell_ammonia.merge(other_cell_title)
+merge_cell_ammonia.is_merge_origin
+cell = ammonia_table.cell(1, 0)
+# Body of Table 
+cell.text
+cell.text = f"Current Price (as of {current_datetime})"
+cell = ammonia_table.cell(2, 0)
+cell.text
+cell.text = f"Prev Wk Price (as of {current_datetime})"
+cell = ammonia_table.cell(3, 0)
+cell.text
+cell.text = f"Price (as of {current_datetime})"
+cell = ammonia_table.cell(4, 0)
+cell.text
+cell.text = "Change in Price (%)"
+cell = ammonia_table.cell(5, 0)
+cell.text
+cell.text = f"Market Cap (as of {current_datetime})"
+cell = ammonia_table.cell(6, 0)
+cell.text
+cell.text = "Number of Shares"
+cell = ammonia_table.cell(7, 0)
+cell.text
+cell.text = "Chart (1 year)"
+merge_cell = ammonia_table.cell(7, 0)
+other_cell = ammonia_table.cell(7, 1)
+merge_cell.merge(other_cell)
+merge_cell.is_merge_origin
 
 
 # Slide 3: Content slide with image
-slide_layout = prs.slide_layouts[1]  # Content slide layout
+slide_layout = prs.slide_layouts[5]  # Content slide layout
 slide3 = prs.slides.add_slide(slide_layout)
 title3 = slide3.shapes.title
-title3.text = "Content Slide 2"
+title3.text = "News"
 
-# Slide 4: Adding hyperlinks
-slide_layout = prs.slide_layouts[1]  # Content slide layout
+# Defining the number of rows and columns for the table
+rows = 4
+cols = 3
+
+# Define the width of each column
+col_widths = [Inches(2)] * cols
+
+# Define the height of each row
+row_heights = [Inches(0.8), Inches(1.5), Inches(0.8), Inches(1.5)]
+
+# Adding a table 
+left = Inches(0.5)
+top = Inches(2)
+width = Inches(9)
+height = Inches(12)
+table = slide3.shapes.add_table(rows, cols, left, top, width, height).table
+
+# Set alternating fill colors for the rows
+for row_idx, row in enumerate(table.rows):
+    if row_idx % 2 == 0:
+        color = RGBColor(148, 197, 84)  # Green
+        row.height = row_heights[0]
+    else:
+        color = RGBColor(255, 255, 255)  # White
+        row.height = row_heights[1]
+    for cell in row.cells:
+        fill = cell.fill
+        fill.solid()
+        fill.fore_color.rgb = color
+
+# Add data to the table
+data = [
+    ['A1', 'B1', 'C1'],
+    ['A2', 'B2', 'C2'],
+    ['A3', 'B3', 'C3'],
+    ['A4', 'B4', 'C4']
+]
+
+for i, row in enumerate(data):
+    for j, value in enumerate(row):
+        cell = table.cell(i, j)
+        cell.text = value
+        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER  # Center align text
+        cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size
+
+# Slide 4: Content slide with image
+slide_layout = prs.slide_layouts[5]  # Content slide layout
 slide4 = prs.slides.add_slide(slide_layout)
 title4 = slide4.shapes.title
-title4.text = "Hyperlinks"
-para4 = slide4.placeholders[1].text_frame.paragraphs[0]
-addrun1 = para4.add_run()
+title4.text = "Competitors/OEMs"
+
+# Define the number of rows and columns for the table
+rows = 8
+cols = 2
+
+# Define the width of each column
+col_widths = [Inches(1)] * cols
+
+# Define the height of each row
+row_height = Inches(0.1)
+
+# Add a table to the slide
+left = Inches(0.6)
+top = Inches(1.3)
+width = Inches(4.5)
+height = Inches(6)
+competitor_table = slide4.shapes.add_table(rows, cols, left, top, width, height).table
+cell.text = "Company Name (Ticker: XXX)"
+cell = competitor_table.cell(0, 0)
+cell.text = "Primary Industry"
+cell = competitor_table.cell(1, 0)
+cell.text = f"Current Price (as of {current_datetime})"
+cell = competitor_table.cell(2, 0)
+cell.text
+cell.text = f"Prev Wk Price (as of {current_datetime})"
+cell = competitor_table.cell(3, 0)
+cell.text
+cell.text = f"Price (as of {current_datetime})"
+cell = competitor_table.cell(4, 0)
+cell.text
+cell.text = "Change in Price (%)"
+cell = competitor_table.cell(5, 0)
+cell.text
+cell.text = f"Market Cap (as of {current_datetime})"
+cell = competitor_table.cell(6, 0)
+cell.text
+cell.text = "Number of Shares"
+cell = competitor_table.cell(7, 0)
+cell.text
+cell.text = "Chart (1 year)"  
+
+#Merging Cells
+merge_cell = competitor_table.cell(0, 0)
+other_cell = competitor_table.cell(0, 1)
+merge_cell.merge(other_cell)
+merge_cell.is_merge_origin
+cell = competitor_table.cell(1, 0)
+
+merge_cell = competitor_table.cell(7, 0)
+other_cell = competitor_table.cell(7, 1)
+merge_cell.merge(other_cell)
+merge_cell.is_merge_origin
+cell = competitor_table.cell(7, 0)
+
+# Set the fill color for the entire table
+for row in competitor_table.rows:
+    for cell in row.cells:
+        fill = cell.fill
+        fill.solid()
+        fill.fore_color.rgb = RGBColor(148, 197, 84) 
+
+# Add data to the table
+for row in range(rows):
+    for col in range(cols):
+        cell = competitor_table.cell(row, col)
+        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.LEFT  # Center align text
+        cell.text_frame.paragraphs[0].font.size = Pt(11)
+           
+
+# Slide 5: Adding hyperlinks
+slide_layout = prs.slide_layouts[1]  # Content slide layout
+slide5 = prs.slides.add_slide(slide_layout)
+title5 = slide5.shapes.title
+title5.text = "Hyperlinks"
+para5 = slide5.placeholders[1].text_frame.paragraphs[0]
+addrun1 = para5.add_run()
 addrun1.text = "Google Hyperlink"
 hlink1 = addrun1.hyperlink
 hlink1.address = "https://www.google.com.au"
