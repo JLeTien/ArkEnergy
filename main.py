@@ -170,9 +170,38 @@ def slide2(prs, slide_data):
     for row in range(rows):
         for col in range(cols):
             cell = table.cell(row, col)
-            cell.text_frame.paragraphs[0].font.size = Pt(12)  # Change the font size (e.g., 12 points)
+            cell.text_frame.paragraphs[0].font.size = Pt(12)  
 
-def slide3(prs):
+def slide3(prs, slide_data):
+    # Add a slide to the presentation
+    slide_layout = prs.slide_layouts[1]  # Choose a layout that supports tables (e.g., Title and Content)
+    slide = prs.slides.add_slide(slide_layout)
+    
+    # Set the title of the slide
+    title_shape = slide.shapes.title
+    title_shape.text = "Recent News"
+    
+    # Define table dimensions and position
+    rows, cols = 2, 3
+    left = Inches(1)
+    top = Inches(2)
+    width = Inches(6)
+    height = Inches(1.5)
+
+    # Add a table to the slide
+    table = slide.shapes.add_table(rows, cols, left, top, width, height).table
+    # Populate the table with data
+    for col, slide_content in enumerate(slide_data):
+        table.cell(0, col).text = slide_content['title']
+        table.cell(1, col).text = slide_content['content']
+
+    # Set the font size for the table cells
+    for row in range(rows):
+        for col in range(cols):
+            cell = table.cell(row, col)
+            cell.text_frame.paragraphs[0].font.size = Pt(12)  
+
+def slide4(prs):
     slide_layout = prs.slide_layouts[1]
     slide4 = prs.slides.add_slide(slide_layout)
     title4 = slide4.shapes.title
@@ -183,24 +212,27 @@ def slide3(prs):
     hlink1 = addrun1.hyperlink
     hlink1.address = "https://www.google.com.au"
 
-def generate_ppt(slides_data):
+def generate_ppt(slides_data, slides_data2):
     prs = Presentation()
     slide1(prs)    
     slide2(prs, slides_data)
-    slide3(prs)
+    slide3(prs, slides_data2)
+    slide4(prs)
     
     prs.save('Monthly_Report.pptx')
 
 def main():
     process = CrawlerProcess()
     process.crawl(Spider1)
+    process.crawl(Spider2)
     process.start()
 
     slides_data = Spider1.slides_data
+    slides_data2 = Spider2.slides_data
     
     # Now you can use the slides_data list as needed
     print(slides_data)
-    generate_ppt(slides_data)
+    generate_ppt(slides_data, slides_data2)
     
 if __name__ == "__main__":
     main()
