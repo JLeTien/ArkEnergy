@@ -6,6 +6,7 @@ from pptx.enum.dml import MSO_THEME_COLOR
 from pptx.enum.text import PP_ALIGN
 from datetime import datetime
 from pptx.dml.color import RGBColor
+import os
 
 # Create a presentation object
 prs = Presentation()
@@ -26,24 +27,32 @@ current_datetime = datetime.now().strftime("%Y-%m-%d")
 # to generate time stamps use formating "%H:%M:%S" 
 current_time.text = f"Generated at: {current_datetime}"
 
-img1 = "180degreeslogo.png"
+# Get the current directory of the Python script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+img_folder = "Logo"
+    
+# Path to the image file relative to the current directory
+img1 = "180degreelogo.png"
+img_path1 = os.path.join(current_dir, img_folder, img1)
 from_left = Inches(7.456)
 from_top = Inches(6.5)
 length = Inches(2)
-add_picture = slide1.shapes.add_picture(img1, from_left, from_top, length)
+slide1.shapes.add_picture(img_path1, from_left, from_top, length)
 
-img2 = "Arkenergylogo.png" 
+img2 = "Arkenergylogo.png"
+img_path2 = os.path.join(current_dir, img_folder, img2)
 from_left = Inches(5.169)
 from_top = Inches(6.5)
 length = Inches(2)
-add_picture = slide1.shapes.add_picture(img2, from_left, from_top, length)
+slide1.shapes.add_picture(img_path2, from_left, from_top, length)
 
-img3 = "Home_button.png" 
+img3 = "Home_button.png"
+img_path3 = os.path.join(current_dir, img_folder, img3)
 from_left = Inches(8.413)
 from_top = Inches(0.0511)
 height = Inches(0.5)
 width = Inches(0.5)
-add_picture3 = slide1.shapes.add_picture(img3, from_left, from_top, height, width)
+add_picture3 = slide1.shapes.add_picture(img_path3, from_left, from_top, height, width)
 add_picture3.zorder = 100
 
 green_line = slide1.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.921), Inches(1), Inches(3.921), Inches(6.212))
