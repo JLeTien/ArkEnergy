@@ -13,6 +13,8 @@ from pptx.enum.dml import MSO_THEME_COLOR
 from pptx.enum.text import PP_ALIGN
 from datetime import datetime
 from pptx.dml.color import RGBColor
+import yfinance as yf
+import pandas as pd
 
 def slide1(prs):
     # Slide 1: Title slide
@@ -201,7 +203,44 @@ def slide3(prs, slide_data):
             cell = table.cell(row, col)
             cell.text_frame.paragraphs[0].font.size = Pt(12)  
 
-def slide4(prs):
+def slide4(prs, company_data):
+    # Add a slide to the presentation
+    slide_layout = prs.slide_layouts[5]  # Choose a layout that supports title and content
+    slide = prs.slides.add_slide(slide_layout)
+
+    # Set the title of the slide
+    title_shape = slide.shapes.title
+    title_shape.text = "Company Data"
+    title_shape.text_frame.paragraphs[0].font.size = Pt(15)
+
+    # Define table position and size
+    slide_width = prs.slide_width
+    slide_height = prs.slide_height
+
+    left = Inches(0.1)  # Adjust left position to center the table
+    top = Inches(1)
+    width = slide_width - Inches(1)  # Use slide width minus some padding
+    height = slide_height - Inches(3)  # Use slide height minus some padding
+
+    # Add a table to the slide
+    table = slide.shapes.add_table(len(company_data) + 1, len(company_data[0]), left, top, width, height).table
+
+    # Populate the table with data
+    headers = list(company_data[0].keys())
+    for col, header in enumerate(headers):
+        table.cell(0, col).text = header
+
+    for row_idx, row_data in enumerate(company_data, start=1):
+        for col_idx, value in enumerate(row_data.values()):
+            table.cell(row_idx, col_idx).text = str(value)
+
+    # Set the font size for the table cells
+    for row in range(len(company_data) + 1):
+        for col in range(len(company_data[0])):
+            cell = table.cell(row, col)
+            cell.text_frame.paragraphs[0].font.size = Pt(9)
+
+def slide5(prs):
     slide_layout = prs.slide_layouts[1]
     slide4 = prs.slides.add_slide(slide_layout)
     title4 = slide4.shapes.title
@@ -211,14 +250,14 @@ def slide4(prs):
     addrun1.text = "Google Hyperlink"
     hlink1 = addrun1.hyperlink
     hlink1.address = "https://www.google.com.au"
-
-def generate_ppt(slides_data, slides_data2):
+    
+def generate_ppt(slides_data, slides_data2, company_data):
     prs = Presentation()
     slide1(prs)    
     slide2(prs, slides_data)
     slide3(prs, slides_data2)
-    slide4(prs)
-    
+    slide4(prs, company_data)
+    slide5(prs)
     prs.save('Monthly_Report.pptx')
 
 def main():
@@ -231,8 +270,10 @@ def main():
     slides_data2 = Spider2.slides_data
     
     # Now you can use the slides_data list as needed
-    print(slides_data)
-    generate_ppt(slides_data, slides_data2)
+    # print(slides_data)
+    company_data = pd.read_csv("company_data.csv").to_dict("records")
+    
+    generate_ppt(slides_data, slides_data2, company_data)
     
 if __name__ == "__main__":
     main()
