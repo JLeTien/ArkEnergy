@@ -17,6 +17,7 @@ import yfinance as yf
 import pandas as pd
 from pptx.enum.dml import MSO_LINE
 from pptx.enum.text import MSO_ANCHOR
+from AI_module.summaryopenai import *
 
 def slide1(prs):
     # Slide 1: Title slide
@@ -146,35 +147,6 @@ def slide1(prs):
     textbox_g = slide.shapes.add_textbox(left=Inches(6.417), top=Inches(3.543), height=Inches(0.41), width=Inches(0.901))
     text_box_g= textbox_g.text_frame
     text_box_g.text = "Grants"
-    
-def slide0(prs, slide_data):
-    # Add a slide to the presentation
-    slide_layout = prs.slide_layouts[1]  # Choose a layout that supports tables (e.g., Title and Content)
-    slide = prs.slides.add_slide(slide_layout)
-    
-    # Set the title of the slide
-    title_shape = slide.shapes.title
-    title_shape.text = "Recent News"
-    
-    # Define table dimensions and position
-    rows, cols = 2, 3
-    left = Inches(1)
-    top = Inches(2)
-    width = Inches(6)
-    height = Inches(1.5)
-
-    # Add a table to the slide
-    table = slide.shapes.add_table(rows, cols, left, top, width, height).table
-    # Populate the table with data
-    for col, slide_content in enumerate(slide_data):
-        table.cell(0, col).text = slide_content['title']
-        table.cell(1, col).text = slide_content['content']
-
-    # Set the font size for the table cells
-    for row in range(rows):
-        for col in range(cols):
-            cell = table.cell(row, col)
-            cell.text_frame.paragraphs[0].font.size = Pt(12)  
 
 def slide00(prs, slide_data):
     # Add a slide to the presentation
@@ -378,11 +350,8 @@ def slide3(prs, slides_data, slides_data2):
     title3.text = "News"
 
     # Defining the number of rows and columns for the table
-    rows = 4
+    rows = 2
     cols = 3
-
-    # Define the width of each column
-    col_widths = [Inches(2)] * cols
 
     # Define the height of each row
     row_heights = [Inches(0.6), Inches(2.2), Inches(0.6), Inches(2.2)]
@@ -411,8 +380,6 @@ def slide3(prs, slides_data, slides_data2):
     data = [
         ['A1', 'B1', 'C1'],
         ['A2', 'B2', 'C2'],
-        ['A3', 'B3', 'C3'],
-        ['A4', 'B4', 'C4']
     ]
     for i, row in enumerate(data):
         for j, value in enumerate(row):
@@ -428,26 +395,14 @@ def slide3(prs, slides_data, slides_data2):
     cell.text = slides_data[1]['title']
     cell = table.cell(0, 2)
     cell.text = slides_data[2]['title']
-    cell = table.cell(2, 0)
-    cell.text = slides_data2[0]['title']
-    cell = table.cell(2, 1)
-    cell.text = slides_data2[1]['title']
-    cell = table.cell(2, 2)
-    cell.text = slides_data2[2]['title']
     
     # Content of News Articles 
     cell = table.cell(1, 0)
-    cell.text = 'Content'
+    cell.text = summarise(slides_data[0]['content'])
     cell = table.cell(1, 1)
-    cell.text = 'Content'
+    cell.text = summarise(slides_data[1]['content'])
     cell = table.cell(1, 2)
-    cell.text = 'Content'
-    cell = table.cell(3, 0)
-    cell.text = 'Content'
-    cell = table.cell(3, 1)
-    cell.text = 'Content'
-    cell = table.cell(3, 2)
-    cell.text = 'Content'
+    cell.text = summarise(slides_data[2]['content'])
 
 def slide4(prs):
     # Slide 4: Competitors Page
@@ -879,7 +834,6 @@ def generate_ppt(slides_data, slides_data2, company_data):
     slide1(prs)
     
     ######
-    slide0(prs, slides_data)
     slide00(prs, slides_data2)    
     slide000(prs, company_data)
     ######
