@@ -133,71 +133,134 @@ def main():
     slide2 = prs.slides.add_slide(slide_layout)
     title2 = slide2.shapes.title
     title2.text = "Key Commodities"
-    title2.top = Inches(0.2)
+    title2.top = Inches(0.1)
     title2.left = Inches(0.3)
     title2.width = Inches(3)
     title2.height = Inches(1.42)
     title2.text_frame.paragraphs[0].font.size = Pt(26)
 
     # Divider
-    green_line = slide2.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.55), Inches(0.5), Inches(3.55), Inches(7))
-    line = green_line.line
-    line.color.rgb = RGBColor(148, 197, 84)
+    # green_line = slide2.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.55), Inches(0.5), Inches(3.55), Inches(7))
+    # line = green_line.line
+    # line.color.rgb = RGBColor(148, 197, 84)
 
-    # Main Body Table
-    # Define the coordinates and size of the table
-    x, y, cx, cy = Inches(0.4), Inches(1.3), Inches(2.8), Inches(1.8)
-    # Add the table to the slide
-    ammonia = slide2.shapes.add_table(9, 2, x, y, cx, cy)
-    ammonia_table = ammonia.table
-    # Set the fill color of the table to green
-    for row in ammonia_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
+    # # Main Body Table
+    # # Define the coordinates and size of the table
+    # x, y, cx, cy = Inches(0.4), Inches(1.3), Inches(2.8), Inches(1.8)
+    # # Add the table to the slide
+    # ammonia = slide2.shapes.add_table(9, 2, x, y, cx, cy)
+    # ammonia_table = ammonia.table
+    # # Set the fill color of the table to green
+    # for row in ammonia_table.rows:
+    #     for cell in row.cells:
+    #         fill = cell.fill
+    #         fill.solid()
+    #         fill.fore_color.rgb = RGBColor(148, 197, 84) 
 
-    # Title of the table
-    cell = ammonia_table.cell(0, 0)
-    cell.text = 'Ammonia'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # # Title of the table
+    # cell = ammonia_table.cell(0, 0)
+    # cell.text = 'Ammonia'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
 
-    # Merge Relevant Cells
-    merge_cell_ammonia = ammonia_table.cell(0, 0)
-    other_cell_title = ammonia_table.cell(0, 1)
-    merge_cell_ammonia.merge(other_cell_title)
-    merge_cell_ammonia = ammonia_table.cell(8, 0)
-    other_cell_title = ammonia_table.cell(8, 1)
-    merge_cell_ammonia.merge(other_cell_title)
+    # # Merge Relevant Cells
+    # merge_cell_ammonia = ammonia_table.cell(0, 0)
+    # other_cell_title = ammonia_table.cell(0, 1)
+    # merge_cell_ammonia.merge(other_cell_title)
+    # merge_cell_ammonia = ammonia_table.cell(8, 0)
+    # other_cell_title = ammonia_table.cell(8, 1)
+    # merge_cell_ammonia.merge(other_cell_title)
 
-    # Body of the table
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = ammonia_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(11)
+    # # Body of the table
+    # current_datetime = "2024-04-30"
+    # labels = [
+    #     f"Current Price (as of {current_datetime})",
+    #     f"Prev Wk Price (as of {current_datetime})",
+    #     f"Price (as of {current_datetime})",
+    #     "Change in Price (%)",
+    #     f"Market Cap (as of {current_datetime})",
+    #     "Number of Shares",
+    #     "Chart (1 year)"
+    # ]
+    # for i, label in enumerate(labels):
+    #     cell = ammonia_table.cell(i + 1, 0)
+    #     cell.text = label
+    #     cell.text_frame.paragraphs[0].font.size = Pt(11)
 
-    # Merge last cell for the chart
-    merge_cell = ammonia_table.cell(7, 0)
-    other_cell = ammonia_table.cell(7, 1)
-    merge_cell.merge(other_cell)
+    # # Merge last cell for the chart
+    # merge_cell = ammonia_table.cell(7, 0)
+    # other_cell = ammonia_table.cell(7, 1)
+    # merge_cell.merge(other_cell)
 
-    # Last Row Larger 
-    last_row = ammonia_table.rows[8]
-    last_row.height = Inches(2)
+    # # Last Row Larger 
+    # last_row = ammonia_table.rows[8]
+    # last_row.height = Inches(2)
 
-    # SECOND TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(0.52), Inches(5.8), Inches(1.5)
-    second = slide2.shapes.add_table(8, 3, x, y, cx, cy)
+    # # SECOND TABLE 
+    # x, y, cx, cy = Inches(3.9), Inches(0.52), Inches(5.8), Inches(1.5)
+    # second = slide2.shapes.add_table(8, 3, x, y, cx, cy)
+    # second_table = second.table
+    # for row in second_table.rows:
+    #     for cell in row.cells:
+    #         fill = cell.fill
+    #         fill.solid()
+    #         fill.fore_color.rgb = RGBColor(148, 197, 84) 
+    # cell = second_table.cell(0, 1)
+    # cell.text = 'Gold'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # cell = second_table.cell(0, 2)
+    # cell.text = 'Oil'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # current_datetime = "2024-04-30"
+    # labels = [
+    #     f"Current Price (as of {current_datetime})",
+    #     f"Prev Wk Price (as of {current_datetime})",
+    #     f"Price (as of {current_datetime})",
+    #     "Change in Price (%)",
+    #     f"Market Cap (as of {current_datetime})",
+    #     "Number of Shares",
+    #     "Chart (1 year)"
+    # ]
+    # for i, label in enumerate(labels):
+    #     cell = second_table.cell(i + 1, 0)
+    #     cell.text = label
+    #     cell.text_frame.paragraphs[0].font.size = Pt(10)
+
+    # # THIRD TABLE 
+    # x, y, cx, cy = Inches(3.9), Inches(3.8), Inches(5.8), Inches(1.5)
+    # third = slide2.shapes.add_table(8, 3, x, y, cx, cy)
+    # third_table = third.table
+    # for row in third_table.rows:
+    #     for cell in row.cells:
+    #         fill = cell.fill
+    #         fill.solid()
+    #         fill.fore_color.rgb = RGBColor(148, 197, 84) 
+    # cell = third_table.cell(0, 1)
+    # cell.text = 'Steel'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # cell = third_table.cell(0, 2)
+    # cell.text = 'Zinc'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # current_datetime = "2024-04-30"
+    # labels = [
+    #     f"Current Price (as of {current_datetime})",
+    #     f"Prev Wk Price (as of {current_datetime})",
+    #     f"Price (as of {current_datetime})",
+    #     "Change in Price (%)",
+    #     f"Market Cap (as of {current_datetime})",
+    #     "Number of Shares",
+    #     "Chart (1 year)"
+    # ]
+    # for i, label in enumerate(labels):
+    #     cell = third_table.cell(i + 1, 0)
+    #     cell.text = label
+    #     cell.text_frame.paragraphs[0].font.size = Pt(10)
+
+
+
+
+    # ONE TABLE 
+    x, y, cx, cy = Inches(0.5), Inches(1), Inches(9), Inches(6)
+    second = slide2.shapes.add_table(8, 4, x, y, cx, cy)
     second_table = second.table
     for row in second_table.rows:
         for cell in row.cells:
@@ -210,191 +273,206 @@ def main():
     cell = second_table.cell(0, 2)
     cell.text = 'Oil'
     cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    cell = second_table.cell(0, 3)
+    cell.text = 'Crude Oil'
+    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
     current_datetime = "2024-04-30"
     labels = [
+         "Chart (1 year)",
         f"Current Price (as of {current_datetime})",
         f"Prev Wk Price (as of {current_datetime})",
         f"Price (as of {current_datetime})",
         "Change in Price (%)",
         f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
+        "Number of Shares"
     ]
     for i, label in enumerate(labels):
         cell = second_table.cell(i + 1, 0)
         cell.text = label
         cell.text_frame.paragraphs[0].font.size = Pt(10)
 
-    # THIRD TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(3.8), Inches(5.8), Inches(1.5)
-    third = slide2.shapes.add_table(8, 3, x, y, cx, cy)
-    third_table = third.table
-    for row in third_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
-    cell = third_table.cell(0, 1)
-    cell.text = 'Steel'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell = third_table.cell(0, 2)
-    cell.text = 'Zinc'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = third_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(10)
 
-    # Slide 3: Content slide with image
+
+
+
+
+    # #Slide 3: Content slide with image
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide3 = prs.slides.add_slide(slide_layout)
     title3 = slide3.shapes.title
     title3.text = "News"
 
-    # Defining the number of rows and columns for the table
     rows = 4
-    cols = 3
+    cols = 4
 
     # Define the width of each column
     col_widths = [Inches(2)] * cols
 
     # Define the height of each row
-    row_heights = [Inches(0.6), Inches(2.2), Inches(0.6), Inches(2.2)]
+    row_heights = [Inches(0.8), Inches(0.6), Inches(0.6), Inches(3)]
 
-    # Adding a table 
+    # Adding a table
     left = Inches(0.5)
-    top = Inches(1.7)
+    top = Inches(1.3)
     width = Inches(9)
-    height = Inches(12)
+    height = Inches(5.5)
     table = slide3.shapes.add_table(rows, cols, left, top, width, height).table
 
-    # Set alternating fill colors for the rows
-    for row_idx, row in enumerate(table.rows):
-        if row_idx % 2 == 0:
-            color = RGBColor(148, 197, 84)  # Green
-            row.height = row_heights[0]
-        else:
-            color = RGBColor(255, 255, 255)  # White
-            row.height = row_heights[1]
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = color
+    # Set the first row and first column background color to green
+    green_color = RGBColor(148, 197, 84)
+    white_color = RGBColor(255, 255, 255)
 
     # Add data to the table
     data = [
-        ['A1', 'B1', 'C1'],
-        ['A2', 'B2', 'C2'],
-        ['A3', 'B3', 'C3'],
-        ['A4', 'B4', 'C4']
+        ['', 'Title', 'Title', 'Title'],
+        ['Date', 'xx/xx/xxxx', 'xx/xx/xxxx', 'xx/xx/xxxx'],
+        ['Source', 'URL', 'URL', 'URL'],
+        ['Description', 'Content', 'Content', 'Content']
     ]
+
     for i, row in enumerate(data):
         for j, value in enumerate(row):
             cell = table.cell(i, j)
             cell.text = value
             cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER  # Center align text
             cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size
-    
-    # News Heading 
-    cell = table.cell(0, 0)
-    cell.text = 'XX/XX/XXXX Title'
-    cell = table.cell(0, 1)
-    cell.text = 'XX/XX/XXXX Title'
-    cell = table.cell(0, 2)
-    cell.text = 'XX/XX/XXXX Title'
-    cell = table.cell(2, 0)
-    cell.text = 'XX/XX/XXXX Title'
-    cell = table.cell(2, 1)
-    cell.text = 'XX/XX/XXXX Title'
-    cell = table.cell(2, 2)
-    cell.text = 'XX/XX/XXXX Title'
-    
-    # Content of News Articles 
-    cell = table.cell(1, 0)
-    cell.text = 'Content'
-    cell = table.cell(1, 1)
-    cell.text = 'Content'
-    cell = table.cell(1, 2)
-    cell.text = 'Content'
-    cell = table.cell(3, 0)
-    cell.text = 'Content'
-    cell = table.cell(3, 1)
-    cell.text = 'Content'
-    cell = table.cell(3, 2)
-    cell.text = 'Content'
-    
+            # Set background color
+            if i == 0 or j == 0:
+                cell.fill.solid()
+                cell.fill.fore_color.rgb = green_color
+            else:
+                cell.fill.solid()
+                cell.fill.fore_color.rgb = white_color
+
+    # Adjust row heights
+    for row_idx, height in enumerate(row_heights):
+        table.rows[row_idx].height = height
+
     # Slide 4: Competitors Page
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide4 = prs.slides.add_slide(slide_layout)
     title4 = slide4.shapes.title
     title4.text = "Competitors/OEMs"
-    title4.top = Inches(0.2)
-    title4.left = Inches(0.3)
+    title4.top = Inches(0.05)
+    title4.left = Inches(0.35)
     title4.width = Inches(3)
     title4.height = Inches(1.42)
     title4.text_frame.paragraphs[0].font.size = Pt(25)
     
-    # Divider
-    green_line = slide4.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.55), Inches(0.5), Inches(3.55), Inches(7))
-    line = green_line.line
-    line.color.rgb = RGBColor(148, 197, 84)
+    # # Divider
+    # green_line = slide4.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.55), Inches(0.5), Inches(3.55), Inches(7))
+    # line = green_line.line
+    # line.color.rgb = RGBColor(148, 197, 84)
     
-    # Main Body Table
-    x, y, cx, cy = Inches(0.4), Inches(1.3), Inches(2.8), Inches(1.8)
-    competitors = slide4.shapes.add_table(10, 2, x, y, cx, cy)
-    competitors_table = competitors.table
-    for row in competitors_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84)  # Green
-    cell = competitors_table.cell(0, 0)
-    cell.text = 'Company Name (Ticker: XXX)'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    merge_cell = competitors_table.cell(0, 0)
-    other_cell = competitors_table.cell(0, 1)
-    merge_cell.merge(other_cell)
-    merge_cell = competitors_table.cell(8, 0)
-    other_cell = competitors_table.cell(8, 1)
-    merge_cell .merge(other_cell)
-    merge_cell = competitors_table.cell(9, 0)
-    other_cell = competitors_table.cell(9, 1)
-    merge_cell .merge(other_cell)
+    # # Main Body Table
+    # x, y, cx, cy = Inches(0.4), Inches(1.3), Inches(2.8), Inches(1.8)
+    # competitors = slide4.shapes.add_table(10, 2, x, y, cx, cy)
+    # competitors_table = competitors.table
+    # for row in competitors_table.rows:
+    #     for cell in row.cells:
+    #         fill = cell.fill
+    #         fill.solid()
+    #         fill.fore_color.rgb = RGBColor(148, 197, 84)  # Green
+    # cell = competitors_table.cell(0, 0)
+    # cell.text = 'Company Name (Ticker: XXX)'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # merge_cell = competitors_table.cell(0, 0)
+    # other_cell = competitors_table.cell(0, 1)
+    # merge_cell.merge(other_cell)
+    # merge_cell = competitors_table.cell(8, 0)
+    # other_cell = competitors_table.cell(8, 1)
+    # merge_cell .merge(other_cell)
+    # merge_cell = competitors_table.cell(9, 0)
+    # other_cell = competitors_table.cell(9, 1)
+    # merge_cell .merge(other_cell)
     
-    # Body of the table
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Primary Industry",
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = competitors_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(8)
+    # # Body of the table
+    # current_datetime = "2024-04-30"
+    # labels = [
+    #     f"Primary Industry",
+    #     f"Current Price (as of {current_datetime})",
+    #     f"Prev Wk Price (as of {current_datetime})",
+    #     f"Price (as of {current_datetime})",
+    #     "Change in Price (%)",
+    #     f"Market Cap (as of {current_datetime})",
+    #     "Number of Shares",
+    #     "Chart (1 year)"
+    # ]
+    # for i, label in enumerate(labels):
+    #     cell = competitors_table.cell(i + 1, 0)
+    #     cell.text = label
+    #     cell.text_frame.paragraphs[0].font.size = Pt(8)
     
-    # Last Row Larger 
-    last_row = competitors_table.rows[9]
-    last_row.height = Inches(2)
+    # # Last Row Larger 
+    # last_row = competitors_table.rows[9]
+    # last_row.height = Inches(2)
 
-    # SECOND TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(0.2), Inches(5.8), Inches(1.5)
-    second = slide4.shapes.add_table(8, 3, x, y, cx, cy)
+    # # SECOND TABLE 
+    # x, y, cx, cy = Inches(3.9), Inches(0.2), Inches(5.8), Inches(1.5)
+    # second = slide4.shapes.add_table(8, 3, x, y, cx, cy)
+    # second_table = second.table
+    # for row in second_table.rows:
+    #     for cell in row.cells:
+    #         fill = cell.fill
+    #         fill.solid()
+    #         fill.fore_color.rgb = RGBColor(148, 197, 84) 
+    # cell = second_table.cell(0, 1)
+    # cell.text = 'Heavy Electrical Equipment'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # cell.text_frame.paragraphs[0].font.size = Pt(16)
+    # cell = second_table.cell(0, 2)
+    # cell.text = 'Automobile Manufactures'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # cell.text_frame.paragraphs[0].font.size = Pt(16)
+    # current_datetime = "2024-04-30"
+    # labels = [
+    #     f"Current Price (as of {current_datetime})",
+    #     f"Prev Wk Price (as of {current_datetime})",
+    #     f"Price (as of {current_datetime})",
+    #     "Change in Price (%)",
+    #     f"Market Cap (as of {current_datetime})",
+    #     "Number of Shares",
+    #     "Chart (1 year)"
+    # ]
+    # for i, label in enumerate(labels):
+    #     cell = second_table.cell(i + 1, 0)
+    #     cell.text = label
+    #     cell.text_frame.paragraphs[0].font.size = Pt(10)
+    
+    # # THIRD TABLE 
+    # x, y, cx, cy = Inches(3.9), Inches(3.6), Inches(5.8), Inches(1.5)
+    # third = slide4.shapes.add_table(8, 3, x, y, cx, cy)
+    # third_table = third.table
+    # for row in third_table.rows:
+    #     for cell in row.cells:
+    #         fill = cell.fill
+    #         fill.solid()
+    #         fill.fore_color.rgb = RGBColor(148, 197, 84) 
+    # cell = third_table.cell(0, 1)
+    # cell.text = 'Construction Machinery'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # cell = third_table.cell(0, 2)
+    # cell.text = 'Electric Components and Equipment'
+    # cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    # current_datetime = "2024-04-30"
+    # labels = [
+    #     f"Current Price (as of {current_datetime})",
+    #     f"Prev Wk Price (as of {current_datetime})",
+    #     f"Price (as of {current_datetime})",
+    #     "Change in Price (%)",
+    #     f"Market Cap (as of {current_datetime})",
+    #     "Number of Shares",
+    #     "Chart (1 year)"
+    # ]
+    # for i, label in enumerate(labels):
+    #     cell = third_table.cell(i + 1, 0)
+    #     cell.text = label
+    #     cell.text_frame.paragraphs[0].font.size = Pt(10)
+
+
+    # ONE TABLE 
+    x, y, cx, cy = Inches(0.5), Inches(1), Inches(9.2), Inches(6)
+    second = slide4.shapes.add_table(8, 5, x, y, cx, cy)
     second_table = second.table
     for row in second_table.rows:
         for cell in row.cells:
@@ -402,57 +480,53 @@ def main():
             fill.solid()
             fill.fore_color.rgb = RGBColor(148, 197, 84) 
     cell = second_table.cell(0, 1)
-    cell.text = 'Heavy Electrical Equipment'
+    cell.text = 'Hyzon Motors Inc. HYZN'
     cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell.text_frame.paragraphs[0].font.size = Pt(16)
     cell = second_table.cell(0, 2)
-    cell.text = 'Automobile Manufactures'
+    cell.text = 'Energy Vault Holdings, Inc. HYMTF'
     cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell.text_frame.paragraphs[0].font.size = Pt(16)
+    cell = second_table.cell(0, 3)
+    cell.text = 'Toyota Motor Corporation TM'
+    cell = second_table.cell(0, 4)
+    cell.text = 'Cummins Inc. CMI'
+    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
     current_datetime = "2024-04-30"
     labels = [
+        "Chart (1 year)",
         f"Current Price (as of {current_datetime})",
         f"Prev Wk Price (as of {current_datetime})",
         f"Price (as of {current_datetime})",
         "Change in Price (%)",
         f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
+        "Number of Shares"
     ]
+
     for i, label in enumerate(labels):
         cell = second_table.cell(i + 1, 0)
         cell.text = label
         cell.text_frame.paragraphs[0].font.size = Pt(10)
-    
-    # THIRD TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(3.6), Inches(5.8), Inches(1.5)
-    third = slide4.shapes.add_table(8, 3, x, y, cx, cy)
-    third_table = third.table
-    for row in third_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
-    cell = third_table.cell(0, 1)
-    cell.text = 'Construction Machinery'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell = third_table.cell(0, 2)
-    cell.text = 'Electric Components and Equipment'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = third_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # Slide 5: Projects
     slide_layout = prs.slide_layouts[5]  # Content slide layout
