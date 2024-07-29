@@ -148,35 +148,6 @@ def slide1(prs):
     text_box_g= textbox_g.text_frame
     text_box_g.text = "Grants"
 
-def slide00(prs, slide_data):
-    # Add a slide to the presentation
-    slide_layout = prs.slide_layouts[1]  # Choose a layout that supports tables (e.g., Title and Content)
-    slide = prs.slides.add_slide(slide_layout)
-    
-    # Set the title of the slide
-    title_shape = slide.shapes.title
-    title_shape.text = "Recent News"
-    
-    # Define table dimensions and position
-    rows, cols = 2, 3
-    left = Inches(1)
-    top = Inches(2)
-    width = Inches(6)
-    height = Inches(1.5)
-
-    # Add a table to the slide
-    table = slide.shapes.add_table(rows, cols, left, top, width, height).table
-    # Populate the table with data
-    for col, slide_content in enumerate(slide_data):
-        table.cell(0, col).text = slide_content['title']
-        table.cell(1, col).text = slide_content['content']
-
-    # Set the font size for the table cells
-    for row in range(rows):
-        for col in range(cols):
-            cell = table.cell(row, col)
-            cell.text_frame.paragraphs[0].font.size = Pt(12)  
-
 def slide000(prs, company_data):
     # Add a slide to the presentation
     slide_layout = prs.slide_layouts[5]  # Choose a layout that supports title and content
@@ -215,76 +186,20 @@ def slide000(prs, company_data):
             cell.text_frame.paragraphs[0].font.size = Pt(9)
 
 def slide2(prs):
-     # Slide 2: Content slide with bullet points
+    # Slide 2: Content slide with bullet points
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide2 = prs.slides.add_slide(slide_layout)
     title2 = slide2.shapes.title
     title2.text = "Key Commodities"
-    title2.top = Inches(0.2)
+    title2.top = Inches(0.1)
     title2.left = Inches(0.3)
     title2.width = Inches(3)
     title2.height = Inches(1.42)
     title2.text_frame.paragraphs[0].font.size = Pt(26)
 
-    # Divider
-    green_line = slide2.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.55), Inches(0.5), Inches(3.55), Inches(7))
-    line = green_line.line
-    line.color.rgb = RGBColor(148, 197, 84)
-
-    # Main Body Table
-    # Define the coordinates and size of the table
-    x, y, cx, cy = Inches(0.4), Inches(1.3), Inches(2.8), Inches(1.8)
-    # Add the table to the slide
-    ammonia = slide2.shapes.add_table(9, 2, x, y, cx, cy)
-    ammonia_table = ammonia.table
-    # Set the fill color of the table to green
-    for row in ammonia_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
-
-    # Title of the table
-    cell = ammonia_table.cell(0, 0)
-    cell.text = 'Ammonia'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-
-    # Merge Relevant Cells
-    merge_cell_ammonia = ammonia_table.cell(0, 0)
-    other_cell_title = ammonia_table.cell(0, 1)
-    merge_cell_ammonia.merge(other_cell_title)
-    merge_cell_ammonia = ammonia_table.cell(8, 0)
-    other_cell_title = ammonia_table.cell(8, 1)
-    merge_cell_ammonia.merge(other_cell_title)
-
-    # Body of the table
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = ammonia_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(11)
-
-    # Merge last cell for the chart
-    merge_cell = ammonia_table.cell(7, 0)
-    other_cell = ammonia_table.cell(7, 1)
-    merge_cell.merge(other_cell)
-
-    # Last Row Larger 
-    last_row = ammonia_table.rows[8]
-    last_row.height = Inches(2)
-
-    # SECOND TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(0.52), Inches(5.8), Inches(1.5)
-    second = slide2.shapes.add_table(8, 3, x, y, cx, cy)
+    # ONE TABLE 
+    x, y, cx, cy = Inches(0.5), Inches(1), Inches(9), Inches(6)
+    second = slide2.shapes.add_table(8, 4, x, y, cx, cy)
     second_table = second.table
     for row in second_table.rows:
         for cell in row.cells:
@@ -297,52 +212,25 @@ def slide2(prs):
     cell = second_table.cell(0, 2)
     cell.text = 'Oil'
     cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+    cell = second_table.cell(0, 3)
+    cell.text = 'Crude Oil'
+    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
     current_datetime = "2024-04-30"
     labels = [
+         "Chart (1 year)",
         f"Current Price (as of {current_datetime})",
         f"Prev Wk Price (as of {current_datetime})",
         f"Price (as of {current_datetime})",
         "Change in Price (%)",
         f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
+        "Number of Shares"
     ]
     for i, label in enumerate(labels):
         cell = second_table.cell(i + 1, 0)
         cell.text = label
         cell.text_frame.paragraphs[0].font.size = Pt(10)
-
-    # THIRD TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(3.8), Inches(5.8), Inches(1.5)
-    third = slide2.shapes.add_table(8, 3, x, y, cx, cy)
-    third_table = third.table
-    for row in third_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
-    cell = third_table.cell(0, 1)
-    cell.text = 'Steel'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell = third_table.cell(0, 2)
-    cell.text = 'Zinc'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = third_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(10)
         
-def slide3(prs, slides_data, slides_data2):
+def slide3(prs, slides_data):
     # Slide 3: Content slide with image
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide3 = prs.slides.add_slide(slide_layout)
@@ -350,123 +238,119 @@ def slide3(prs, slides_data, slides_data2):
     title3.text = "News"
 
     # Defining the number of rows and columns for the table
-    rows = 2
-    cols = 3
+    rows = 4
+    cols = 4
 
     # Define the height of each row
-    row_heights = [Inches(0.6), Inches(2.2), Inches(0.6), Inches(2.2)]
+    row_heights = [Inches(0.8), Inches(0.6), Inches(0.6), Inches(3)]
 
     # Adding a table 
     left = Inches(0.5)
     top = Inches(1.3)
     width = Inches(9)
-    height = Inches(12)
+    height = Inches(5.5)
     table = slide3.shapes.add_table(rows, cols, left, top, width, height).table
 
-    # Set alternating fill colors for the rows
-    for row_idx, row in enumerate(table.rows):
-        if row_idx % 2 == 0:
-            color = RGBColor(148, 197, 84)  # Green
-            row.height = row_heights[0]
-        else:
-            color = RGBColor(255, 255, 255)  # White
-            row.height = row_heights[1]
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = color
+    # Define colors
+    green_color = RGBColor(148, 197, 84)
+    white_color = RGBColor(255, 255, 255)
 
-    # Add data to the table
+    # Data to populate the table
     data = [
-        ['A1', 'B1', 'C1'],
-        ['A2', 'B2', 'C2'],
+        ['', slides_data[0]['title'], slides_data[1]['title'], slides_data[2]['title']],
+        ['Date', 'xx/xx/xxxx', 'xx/xx/xxxx', 'xx/xx/xxxx'],
+        ['Source', 'URL', 'URL', 'URL'],
+        ['Description', summarise(slides_data[0]['content']), summarise(slides_data[1]['content']), summarise(slides_data[2]['content'])]
     ]
+
+    # Populate the table with data and formatting
     for i, row in enumerate(data):
         for j, value in enumerate(row):
             cell = table.cell(i, j)
             cell.text = value
             cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER  # Center align text
-            cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size
-    
-    # News Heading 
-    cell = table.cell(0, 0)
-    cell.text = slides_data[0]['title']
-    cell = table.cell(0, 1)
-    cell.text = slides_data[1]['title']
-    cell = table.cell(0, 2)
-    cell.text = slides_data[2]['title']
-    
-    # Content of News Articles 
-    cell = table.cell(1, 0)
-    cell.text = summarise(slides_data[0]['content'])
-    cell = table.cell(1, 1)
-    cell.text = summarise(slides_data[1]['content'])
-    cell = table.cell(1, 2)
-    cell.text = summarise(slides_data[2]['content'])
+            
+            # Set background color
+            cell.fill.solid()
+            if i == 0 or j == 0:
+                cell.fill.fore_color.rgb = green_color
+                cell.text_frame.paragraphs[0].font.size = Pt(14)  # Set font size for headers
+            else:
+                cell.fill.fore_color.rgb = white_color
+                cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size for other content
 
-def slide4(prs):
+    # Adjust row heights
+    for row_idx, height in enumerate(row_heights):
+        table.rows[row_idx].height = height
+
+def slide4(prs, slides_data):
+    # Slide 3: Content slide with image
+    slide_layout = prs.slide_layouts[5]  # Content slide layout
+    slide3 = prs.slides.add_slide(slide_layout)
+    title3 = slide3.shapes.title
+    title3.text = "News"
+
+    # Defining the number of rows and columns for the table
+    rows = 4
+    cols = 4
+
+    # Define the height of each row
+    row_heights = [Inches(0.8), Inches(0.6), Inches(0.6), Inches(3)]
+
+    # Adding a table 
+    left = Inches(0.5)
+    top = Inches(1.3)
+    width = Inches(9)
+    height = Inches(5.5)
+    table = slide3.shapes.add_table(rows, cols, left, top, width, height).table
+
+    # Define colors
+    green_color = RGBColor(148, 197, 84)
+    white_color = RGBColor(255, 255, 255)
+
+    # Data to populate the table
+    data = [
+        ['', slides_data[0]['title'], slides_data[1]['title'], slides_data[2]['title']],
+        ['Date', 'xx/xx/xxxx', 'xx/xx/xxxx', 'xx/xx/xxxx'],
+        ['Source', 'URL', 'URL', 'URL'],
+        ['Description', summarise(slides_data[0]['content']), summarise(slides_data[1]['content']), summarise(slides_data[2]['content'])]
+    ]
+
+    # Populate the table with data and formatting
+    for i, row in enumerate(data):
+        for j, value in enumerate(row):
+            cell = table.cell(i, j)
+            cell.text = value
+            cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER  # Center align text
+            
+            # Set background color
+            cell.fill.solid()
+            if i == 0 or j == 0:
+                cell.fill.fore_color.rgb = green_color
+                cell.text_frame.paragraphs[0].font.size = Pt(14)  # Set font size for headers
+            else:
+                cell.fill.fore_color.rgb = white_color
+                cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size for other content
+
+    # Adjust row heights
+    for row_idx, height in enumerate(row_heights):
+        table.rows[row_idx].height = height
+
+def slide5(prs):
     # Slide 4: Competitors Page
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide4 = prs.slides.add_slide(slide_layout)
     title4 = slide4.shapes.title
     title4.text = "Competitors/OEMs"
-    title4.top = Inches(0.2)
-    title4.left = Inches(0.3)
+    title4.top = Inches(0.05)
+    title4.left = Inches(0.35)
     title4.width = Inches(3)
     title4.height = Inches(1.42)
     title4.text_frame.paragraphs[0].font.size = Pt(25)
     
-    # Divider
-    green_line = slide4.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, Inches(3.55), Inches(0.5), Inches(3.55), Inches(7))
-    line = green_line.line
-    line.color.rgb = RGBColor(148, 197, 84)
-    
-    # Main Body Table
-    x, y, cx, cy = Inches(0.4), Inches(1.3), Inches(2.8), Inches(1.8)
-    competitors = slide4.shapes.add_table(10, 2, x, y, cx, cy)
-    competitors_table = competitors.table
-    for row in competitors_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84)  # Green
-    cell = competitors_table.cell(0, 0)
-    cell.text = 'Company Name (Ticker: XXX)'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    merge_cell = competitors_table.cell(0, 0)
-    other_cell = competitors_table.cell(0, 1)
-    merge_cell.merge(other_cell)
-    merge_cell = competitors_table.cell(8, 0)
-    other_cell = competitors_table.cell(8, 1)
-    merge_cell .merge(other_cell)
-    merge_cell = competitors_table.cell(9, 0)
-    other_cell = competitors_table.cell(9, 1)
-    merge_cell .merge(other_cell)
-    
-    # Body of the table
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Primary Industry",
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = competitors_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(8)
-    
-    # Last Row Larger 
-    last_row = competitors_table.rows[9]
-    last_row.height = Inches(2)
-
-    # SECOND TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(0.2), Inches(5.8), Inches(1.5)
-    second = slide4.shapes.add_table(8, 3, x, y, cx, cy)
+    # ONE TABLE 
+    x, y, cx, cy = Inches(0.5), Inches(1), Inches(9.2), Inches(6)
+    second = slide4.shapes.add_table(8, 5, x, y, cx, cy)
     second_table = second.table
     for row in second_table.rows:
         for cell in row.cells:
@@ -474,59 +358,33 @@ def slide4(prs):
             fill.solid()
             fill.fore_color.rgb = RGBColor(148, 197, 84) 
     cell = second_table.cell(0, 1)
-    cell.text = 'Heavy Electrical Equipment'
+    cell.text = 'Hyzon Motors Inc. HYZN'
     cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell.text_frame.paragraphs[0].font.size = Pt(16)
     cell = second_table.cell(0, 2)
-    cell.text = 'Automobile Manufactures'
+    cell.text = 'Energy Vault Holdings, Inc. HYMTF'
     cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell.text_frame.paragraphs[0].font.size = Pt(16)
+    cell = second_table.cell(0, 3)
+    cell.text = 'Toyota Motor Corporation TM'
+    cell = second_table.cell(0, 4)
+    cell.text = 'Cummins Inc. CMI'
+    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
     current_datetime = "2024-04-30"
     labels = [
+        "Chart (1 year)",
         f"Current Price (as of {current_datetime})",
         f"Prev Wk Price (as of {current_datetime})",
         f"Price (as of {current_datetime})",
         "Change in Price (%)",
         f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
+        "Number of Shares"
     ]
+
     for i, label in enumerate(labels):
         cell = second_table.cell(i + 1, 0)
         cell.text = label
         cell.text_frame.paragraphs[0].font.size = Pt(10)
-    
-    # THIRD TABLE 
-    x, y, cx, cy = Inches(3.9), Inches(3.6), Inches(5.8), Inches(1.5)
-    third = slide4.shapes.add_table(8, 3, x, y, cx, cy)
-    third_table = third.table
-    for row in third_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
-    cell = third_table.cell(0, 1)
-    cell.text = 'Construction Machinery'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell = third_table.cell(0, 2)
-    cell.text = 'Electric Components and Equipment'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    current_datetime = "2024-04-30"
-    labels = [
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares",
-        "Chart (1 year)"
-    ]
-    for i, label in enumerate(labels):
-        cell = third_table.cell(i + 1, 0)
-        cell.text = label
-        cell.text_frame.paragraphs[0].font.size = Pt(10)
    
-def slide5(prs):
+def slide6(prs):
     # Slide 5: Projects
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide5 = prs.slides.add_slide(slide_layout)
@@ -609,7 +467,7 @@ def slide5(prs):
     second = table.columns[1]
     second.width = Inches(6.5)
 
-def slide6(prs):
+def slide7(prs):
     # Slide 6: Adding hyperlinks
     slide_layout = prs.slide_layouts[5] 
     slide6 = prs.slides.add_slide(slide_layout)
@@ -777,7 +635,7 @@ def slide6(prs):
     line.color.rgb = RGBColor(148, 197, 84)
     line.width = Inches(0.08)
     
-def slide7(prs):
+def slide8(prs):
     # Slide 7 Disclaimer
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide7 = prs.slides.add_slide(slide_layout)
@@ -817,7 +675,7 @@ def slide7(prs):
     p.text = disclaimer
     p.alignment = PP_ALIGN.LEFT
     
-def slide8(prs):
+def slide9(prs):
      # Slide 8 Adding hyperlinks
     slide_layout = prs.slide_layouts[1]  # Content slide layout
     slide8 = prs.slides.add_slide(slide_layout)
@@ -832,33 +690,31 @@ def slide8(prs):
 def generate_ppt(slides_data, slides_data2, company_data):
     prs = Presentation()
     slide1(prs)
-    
-    ######
-    slide00(prs, slides_data2)    
+
     slide000(prs, company_data)
-    ######
-    
     slide2(prs)
-    slide3(prs, slides_data, slides_data2)
-    slide4(prs)
+    #slide3(prs, slides_data)
+    #slide4(prs, slides_data2)
     slide5(prs)
     slide6(prs)
     slide7(prs)
     slide8(prs)
+    slide9(prs)
     file_path = 'Monthly_Reports/Monthly_Report.pptx'
     prs.save(file_path)
 
 def main():
     process = CrawlerProcess()
     process.crawl(Spider1)
-    process.crawl(Spider2)
+    # process.crawl(Spider2)
     process.start()
-
-    slides_data = Spider1.slides_data
-    slides_data2 = Spider2.slides_data
     
-    # Now you can use the slides_data list as needed
-    # print(slides_data)
+    slides_data2 = []
+    slides_data = []
+    
+    # slides_data = Spider1.slides_data
+    # slides_data2 = Spider2.slides_data
+    
     company_data = pd.read_csv("company_data.csv").to_dict("records")
     
     generate_ppt(slides_data, slides_data2, company_data)
