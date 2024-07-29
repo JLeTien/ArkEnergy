@@ -17,7 +17,6 @@ import yfinance as yf
 import pandas as pd
 from pptx.enum.dml import MSO_LINE
 from pptx.enum.text import MSO_ANCHOR
-# from AI_module.summaryopenai import *
 from AI_module.summarygemini import *
 
 def slide1(prs):
@@ -69,7 +68,6 @@ def slide1(prs):
     line.color.rgb = RGBColor(148, 197, 84)
     
     # Home button 
-
     home_button = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,left=Inches(8.311),top=Inches(0),width=Inches(0.708),height=Inches(0.606))
     fill_home = home_button.fill
     fill_home.solid()
@@ -80,7 +78,6 @@ def slide1(prs):
     line_home.zorder = -16
 
     # COMMODITY BUTTON
-
     box_commodities = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,left=Inches(4.28),top=Inches(2.145),width=Inches(1.58),height=Inches(0.736))
     fill_commodities = box_commodities.fill
     fill_commodities.solid()
@@ -94,7 +91,6 @@ def slide1(prs):
     text_box_c.text = "Commodities"
 
     # NEWS BUTTON 
-
     box_news = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,left=Inches(6.078),top=Inches(2.145),width=Inches(1.58),height=Inches(0.736))
     fill_news = box_news.fill
     fill_news.solid()
@@ -108,7 +104,6 @@ def slide1(prs):
     text_box_n.text = "News"
 
     # COMPETITORS/OMES BUTTON
-
     box_comp = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,left=Inches(7.877),top=Inches(2.145),width=Inches(1.58),height=Inches(0.736))
     fill_comp = box_comp.fill
     fill_comp.solid()
@@ -122,7 +117,6 @@ def slide1(prs):
     text_box_comp.text = "Competitors"
 
     # PROJECTS BUTTON
-
     box_projects = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,left=Inches(4.28), top=Inches(3.38), width=Inches(1.58), height=Inches(0.736))
     fill_projects = box_projects.fill
     fill_projects.solid()
@@ -136,7 +130,6 @@ def slide1(prs):
     text_box_p.text = "Projects"
 
     # GRANTS BUTTON
-
     box_grants = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE,left=Inches(6.078), top=Inches(3.38), width=Inches(1.58), height=Inches(0.736))
     fill_grants = box_grants.fill
     fill_grants.solid()
@@ -231,7 +224,7 @@ def slide2(prs):
         cell.text = label
         cell.text_frame.paragraphs[0].font.size = Pt(10)
         
-def slide3(prs, slides_data):
+def slide34(prs, slides_data):
     # Slide 3: Content slide with image
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide3 = prs.slides.add_slide(slide_layout)
@@ -248,9 +241,17 @@ def slide3(prs, slides_data):
     # Adding a table 
     left = Inches(0.5)
     top = Inches(1.3)
-    width = Inches(9)
+    total_width = Inches(9)
     height = Inches(5.5)
-    table = slide3.shapes.add_table(rows, cols, left, top, width, height).table
+    
+    # Create the table shape
+    table = slide3.shapes.add_table(rows, cols, left, top, total_width, height).table
+
+    # Set the width for each column
+    col_widths = [Inches(1.5), Inches(2.5), Inches(2.5), Inches(2.5)]
+    
+    for i, width in enumerate(col_widths):
+        table.columns[i].width = width
 
     # Define colors
     green_color = RGBColor(148, 197, 84)
@@ -278,60 +279,10 @@ def slide3(prs, slides_data):
                 cell.text_frame.paragraphs[0].font.size = Pt(14)  # Set font size for headers
             else:
                 cell.fill.fore_color.rgb = white_color
-                cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size for other content
-
-    # Adjust row heights
-    for row_idx, height in enumerate(row_heights):
-        table.rows[row_idx].height = height
-
-def slide4(prs, slides_data):
-    # Slide 3: Content slide with image
-    slide_layout = prs.slide_layouts[5]  # Content slide layout
-    slide3 = prs.slides.add_slide(slide_layout)
-    title3 = slide3.shapes.title
-    title3.text = "News"
-
-    # Defining the number of rows and columns for the table
-    rows = 4
-    cols = 4
-
-    # Define the height of each row
-    row_heights = [Inches(0.8), Inches(0.6), Inches(0.6), Inches(3)]
-
-    # Adding a table 
-    left = Inches(0.5)
-    top = Inches(1.3)
-    width = Inches(9)
-    height = Inches(5.5)
-    table = slide3.shapes.add_table(rows, cols, left, top, width, height).table
-
-    # Define colors
-    green_color = RGBColor(148, 197, 84)
-    white_color = RGBColor(255, 255, 255)
-
-    # Data to populate the table
-    data = [
-        ['', slides_data[0]['title'], slides_data[1]['title'], slides_data[2]['title']],
-        ['Date', 'xx/xx/xxxx', 'xx/xx/xxxx', 'xx/xx/xxxx'],
-        ['Source', 'URL', 'URL', 'URL'],
-        ['Description', summarise(slides_data[0]['content']), summarise(slides_data[1]['content']), summarise(slides_data[2]['content'])]
-    ]
-
-    # Populate the table with data and formatting
-    for i, row in enumerate(data):
-        for j, value in enumerate(row):
-            cell = table.cell(i, j)
-            cell.text = value
-            cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER  # Center align text
-            
-            # Set background color
-            cell.fill.solid()
-            if i == 0 or j == 0:
-                cell.fill.fore_color.rgb = green_color
-                cell.text_frame.paragraphs[0].font.size = Pt(14)  # Set font size for headers
-            else:
-                cell.fill.fore_color.rgb = white_color
-                cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size for other content
+                if i == 3:  # Description row
+                    cell.text_frame.paragraphs[0].font.size = Pt(10)  # Set font size for description content
+                else:
+                    cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size for other content
 
     # Adjust row heights
     for row_idx, height in enumerate(row_heights):
@@ -694,8 +645,8 @@ def generate_ppt(slides_data, slides_data2, company_data):
 
     slide000(prs, company_data)
     slide2(prs)
-    slide3(prs, slides_data)
-    #slide4(prs, slides_data2)
+    slide34(prs, slides_data)
+    slide34(prs, slides_data2)
     slide5(prs)
     slide6(prs)
     slide7(prs)
