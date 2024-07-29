@@ -7,5 +7,6 @@ def summarise_gemini(input_text):
     model = genai.GenerativeModel('gemini-1.5-flash')
     prompt = f"summarise the following in 5 dotpoints. Place numbers in front of each dotpoint: {input_text}"
     response = model.generate_content(prompt)
-
-    return response.text
+    
+    # Ensure that the response is plain text
+    return response.text.strip()

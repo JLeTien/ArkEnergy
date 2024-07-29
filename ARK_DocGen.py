@@ -26,7 +26,7 @@ def title_slide(prs):
     title.width = Inches(2.66)
     title.height = Inches(1.42)
     
-    current_time= slide.shapes.add_textbox(left=Inches(0.9055), top=Inches(4.114), width=Inches(2.838), height=Inches(0.4055))
+    current_time= slide.shapes.add_textbox(left=Inches(0.91), top=Inches(4.12), width=Inches(2.84), height=Inches(0.40))
     current_datetime = datetime.now().strftime("%Y-%m-%d")
     current_time.text = f"Generated at: {current_datetime}"
 
@@ -137,43 +137,6 @@ def title_slide(prs):
     text_box_g= textbox_g.text_frame
     text_box_g.text = "Grants"
 
-def slide000(prs, company_data):
-    # Add a slide to the presentation
-    slide_layout = prs.slide_layouts[5]  # Choose a layout that supports title and content
-    slide = prs.slides.add_slide(slide_layout)
-
-    # Set the title of the slide
-    title_shape = slide.shapes.title
-    title_shape.text = "Company Data"
-    title_shape.text_frame.paragraphs[0].font.size = Pt(15)
-
-    # Define table position and size
-    slide_width = prs.slide_width
-    slide_height = prs.slide_height
-
-    left = Inches(0.1)  # Adjust left position to center the table
-    top = Inches(1)
-    width = slide_width - Inches(1)  # Use slide width minus some padding
-    height = slide_height - Inches(3)  # Use slide height minus some padding
-
-    # Add a table to the slide
-    table = slide.shapes.add_table(len(company_data) + 1, len(company_data[0]), left, top, width, height).table
-
-    # Populate the table with data
-    headers = list(company_data[0].keys())
-    for col, header in enumerate(headers):
-        table.cell(0, col).text = header
-
-    for row_idx, row_data in enumerate(company_data, start=1):
-        for col_idx, value in enumerate(row_data.values()):
-            table.cell(row_idx, col_idx).text = str(value)
-
-    # Set the font size for the table cells
-    for row in range(len(company_data) + 1):
-        for col in range(len(company_data[0])):
-            cell = table.cell(row, col)
-            cell.text_frame.paragraphs[0].font.size = Pt(9)
-
 def commodities_slide(prs):
     # Slide 2: Content slide with bullet points
     slide_layout = prs.slide_layouts[5]  # Content slide layout
@@ -223,8 +186,15 @@ def news_slide(prs, slides_data):
     # Slide 3: Content slide with image
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide3 = prs.slides.add_slide(slide_layout)
+
+    # Title formatting
     title3 = slide3.shapes.title
     title3.text = "News"
+    title3.top = Inches(0.05)  # Same placement as Competitors slide
+    title3.left = Inches(0.35)  # Same placement as Competitors slide
+    title3.width = Inches(3)  # Same width as Competitors slide
+    title3.height = Inches(1.42)  # Same height as Competitors slide
+    title3.text_frame.paragraphs[0].font.size = Pt(25)  # Same font size as Competitors slide
 
     # Defining the number of rows and columns for the table
     rows = 4
@@ -234,8 +204,8 @@ def news_slide(prs, slides_data):
     row_heights = [Inches(0.8), Inches(0.6), Inches(0.6), Inches(3)]
 
     # Adding a table 
-    left = Inches(0.5)
-    top = Inches(1.3)
+    left = Inches(0.5)  # Same left position as Competitors slide
+    top = Inches(1.0)  # Adjusted top position to match Competitors slide
     total_width = Inches(9)
     height = Inches(5.5)
     
@@ -267,17 +237,16 @@ def news_slide(prs, slides_data):
             cell.text = value
             cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER  # Center align text
             
+            # Set font size based on row
+            font_size = Pt(14) if i == 0 else Pt(12) if i < 3 else Pt(10)
+            cell.text_frame.paragraphs[0].font.size = font_size
+
             # Set background color
             cell.fill.solid()
             if i == 0 or j == 0:
                 cell.fill.fore_color.rgb = green_color
-                cell.text_frame.paragraphs[0].font.size = Pt(14)  # Set font size for headers
             else:
                 cell.fill.fore_color.rgb = white_color
-                if i == 3:  # Description row
-                    cell.text_frame.paragraphs[0].font.size = Pt(10)  # Set font size for description content
-                else:
-                    cell.text_frame.paragraphs[0].font.size = Pt(12)  # Set font size for other content
 
     # Adjust row heights
     for row_idx, height in enumerate(row_heights):
