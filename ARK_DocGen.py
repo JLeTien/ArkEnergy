@@ -17,7 +17,8 @@ import yfinance as yf
 import pandas as pd
 from pptx.enum.dml import MSO_LINE
 from pptx.enum.text import MSO_ANCHOR
-from AI_module.summaryopenai import *
+# from AI_module.summaryopenai import *
+from AI_module.summarygemini import *
 
 def slide1(prs):
     # Slide 1: Title slide
@@ -260,7 +261,7 @@ def slide3(prs, slides_data):
         ['', slides_data[0]['title'], slides_data[1]['title'], slides_data[2]['title']],
         ['Date', 'xx/xx/xxxx', 'xx/xx/xxxx', 'xx/xx/xxxx'],
         ['Source', 'URL', 'URL', 'URL'],
-        ['Description', summarise(slides_data[0]['content']), summarise(slides_data[1]['content']), summarise(slides_data[2]['content'])]
+        ['Description', summarise_gemini(slides_data[0]['content']), summarise_gemini(slides_data[1]['content']), summarise_gemini(slides_data[2]['content'])]
     ]
 
     # Populate the table with data and formatting
@@ -693,7 +694,7 @@ def generate_ppt(slides_data, slides_data2, company_data):
 
     slide000(prs, company_data)
     slide2(prs)
-    #slide3(prs, slides_data)
+    slide3(prs, slides_data)
     #slide4(prs, slides_data2)
     slide5(prs)
     slide6(prs)
@@ -706,14 +707,11 @@ def generate_ppt(slides_data, slides_data2, company_data):
 def main():
     process = CrawlerProcess()
     process.crawl(Spider1)
-    # process.crawl(Spider2)
+    process.crawl(Spider2)
     process.start()
     
-    slides_data2 = []
-    slides_data = []
-    
-    # slides_data = Spider1.slides_data
-    # slides_data2 = Spider2.slides_data
+    slides_data = Spider1.slides_data
+    slides_data2 = Spider2.slides_data
     
     company_data = pd.read_csv("company_data.csv").to_dict("records")
     
