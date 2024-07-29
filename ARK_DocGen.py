@@ -1,6 +1,4 @@
-from scrapy import signals
 from scrapy.crawler import CrawlerProcess
-from scrapy.utils.project import get_project_settings
 from ArkEnergyScraper.Scraper.spiders.ArkSpiders import Spider1
 from ArkEnergyScraper.Scraper.spiders.ArkSpiders import Spider2
 from pptx import Presentation
@@ -9,19 +7,17 @@ from pptx.util import Inches
 import os
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.shapes import MSO_CONNECTOR
-from pptx.enum.dml import MSO_THEME_COLOR 
 from pptx.enum.text import PP_ALIGN
-from datetime import datetime
+from datetime import datetime, timedelta
 from pptx.dml.color import RGBColor
 import yfinance as yf
 import pandas as pd
-from pptx.enum.dml import MSO_LINE
 from pptx.enum.text import MSO_ANCHOR
 from AI_module.summarygemini import *
 
-def slide1(prs):
+def title_slide(prs):
     # Slide 1: Title slide
-    slide_layout = prs.slide_layouts[5]  # Title slide layout
+    slide_layout = prs.slide_layouts[5]
     slide = prs.slides.add_slide(slide_layout)
     title = slide.shapes.title
     title.text = "ARK Energy"
@@ -32,7 +28,6 @@ def slide1(prs):
     
     current_time= slide.shapes.add_textbox(left=Inches(0.9055), top=Inches(4.114), width=Inches(2.838), height=Inches(0.4055))
     current_datetime = datetime.now().strftime("%Y-%m-%d")
-    # to generate time stamps use formating "%H:%M:%S" 
     current_time.text = f"Generated at: {current_datetime}"
 
     # Get the current directory of the Python script
@@ -179,7 +174,7 @@ def slide000(prs, company_data):
             cell = table.cell(row, col)
             cell.text_frame.paragraphs[0].font.size = Pt(9)
 
-def slide2(prs):
+def commodities_slide(prs):
     # Slide 2: Content slide with bullet points
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide2 = prs.slides.add_slide(slide_layout)
@@ -224,7 +219,7 @@ def slide2(prs):
         cell.text = label
         cell.text_frame.paragraphs[0].font.size = Pt(10)
         
-def slide34(prs, slides_data):
+def news_slide(prs, slides_data):
     # Slide 3: Content slide with image
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide3 = prs.slides.add_slide(slide_layout)
@@ -288,9 +283,8 @@ def slide34(prs, slides_data):
     for row_idx, height in enumerate(row_heights):
         table.rows[row_idx].height = height
 
-def slide5(prs):
-    # Slide 4: Competitors Page
-    slide_layout = prs.slide_layouts[5]  # Content slide layout
+def comp_slide(prs, financial_data):
+    slide_layout = prs.slide_layouts[5]
     slide4 = prs.slides.add_slide(slide_layout)
     title4 = slide4.shapes.title
     title4.text = "Competitors/OEMs"
@@ -300,43 +294,69 @@ def slide5(prs):
     title4.height = Inches(1.42)
     title4.text_frame.paragraphs[0].font.size = Pt(25)
     
-    # ONE TABLE 
+    # Define the number of rows and columns
+    num_rows = 6  # Number of metrics + header row
+    num_cols = len(financial_data) + 1  # Number of companies + 1 for the row labels
+
     x, y, cx, cy = Inches(0.5), Inches(1), Inches(9.2), Inches(6)
-    second = slide4.shapes.add_table(8, 5, x, y, cx, cy)
-    second_table = second.table
-    for row in second_table.rows:
-        for cell in row.cells:
-            fill = cell.fill
-            fill.solid()
-            fill.fore_color.rgb = RGBColor(148, 197, 84) 
-    cell = second_table.cell(0, 1)
-    cell.text = 'Hyzon Motors Inc. HYZN'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell = second_table.cell(0, 2)
-    cell.text = 'Energy Vault Holdings, Inc. HYMTF'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    cell = second_table.cell(0, 3)
-    cell.text = 'Toyota Motor Corporation TM'
-    cell = second_table.cell(0, 4)
-    cell.text = 'Cummins Inc. CMI'
-    cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-    current_datetime = "2024-04-30"
-    labels = [
-        "Chart (1 year)",
-        f"Current Price (as of {current_datetime})",
-        f"Prev Wk Price (as of {current_datetime})",
-        f"Price (as of {current_datetime})",
-        "Change in Price (%)",
-        f"Market Cap (as of {current_datetime})",
-        "Number of Shares"
+    table = slide4.shapes.add_table(num_rows, num_cols, x, y, cx, cy).table
+
+    # Define colors
+    header_color = RGBColor(148, 197, 84)
+    white_color = RGBColor(255, 255, 255)
+
+    # Define headers
+    metrics = [
+        "Company Name",
+        "Current Price",
+        "Price 1 Week Ago",
+        "Price 1 Month Ago",
+        "Change in Price (%) Week on Week",
+        "Change in Price (%) 1 Month Ago"
     ]
 
-    for i, label in enumerate(labels):
-        cell = second_table.cell(i + 1, 0)
-        cell.text = label
+    # Populate the header row
+    for col_index, metric in enumerate(metrics):
+        cell = table.cell(0, col_index)
+        cell.text = metric
+        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
         cell.text_frame.paragraphs[0].font.size = Pt(10)
+        cell.fill.solid()
+        cell.fill.fore_color.rgb = header_color  # Header color
+
+    # Populate the company names in the first column
+    for row_index, data in enumerate(financial_data, start=1):
+        cell = table.cell(row_index, 0)
+        cell.text = data["Company Name"]
+        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        cell.text_frame.paragraphs[0].font.size = Pt(10)
+        cell.fill.solid()
+        cell.fill.fore_color.rgb = header_color  # First column color
+
+    # Populate the data in the table and set cell colors
+    for row_index, metric in enumerate(metrics[1:], start=1):
+        for col_index, data in enumerate(financial_data, start=1):
+            value = data.get(
+                {
+                    "Current Price": "Current Price",
+                    "Price 1 Week Ago": "Price 1 Week Ago",
+                    "Price 1 Month Ago": "Price 1 Month Ago",
+                    "Change in Price (%) Week on Week": "Change in Price (%) Week on Week",
+                    "Change in Price (%) 1 Month Ago": "Change in Price (%) 1 Month Ago"
+                }[metric], "N/A"
+            )
+            if value is None:
+                value = "N/A"
+            elif isinstance(value, (int, float)):
+                value = f"{value:.2f}"
+            cell = table.cell(row_index, col_index)
+            cell.text = value
+            cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+            cell.text_frame.paragraphs[0].font.size = Pt(10)
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = white_color
    
-def slide6(prs):
+def project_slide(prs):
     # Slide 5: Projects
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide5 = prs.slides.add_slide(slide_layout)
@@ -419,7 +439,7 @@ def slide6(prs):
     second = table.columns[1]
     second.width = Inches(6.5)
 
-def slide7(prs):
+def grants_slide(prs):
     # Slide 6: Adding hyperlinks
     slide_layout = prs.slide_layouts[5] 
     slide6 = prs.slides.add_slide(slide_layout)
@@ -587,7 +607,7 @@ def slide7(prs):
     line.color.rgb = RGBColor(148, 197, 84)
     line.width = Inches(0.08)
     
-def slide8(prs):
+def disclaimer_slide(prs):
     # Slide 7 Disclaimer
     slide_layout = prs.slide_layouts[5]  # Content slide layout
     slide7 = prs.slides.add_slide(slide_layout)
@@ -627,7 +647,7 @@ def slide8(prs):
     p.text = disclaimer
     p.alignment = PP_ALIGN.LEFT
     
-def slide9(prs):
+def references_slide(prs):
      # Slide 8 Adding hyperlinks
     slide_layout = prs.slide_layouts[1]  # Content slide layout
     slide8 = prs.slides.add_slide(slide_layout)
@@ -638,20 +658,71 @@ def slide9(prs):
     addrun1.text = "Google Hyperlink"
     hlink1 = addrun1.hyperlink
     hlink1.address = "https://www.google.com.au"
-      
-def generate_ppt(slides_data, slides_data2, company_data):
-    prs = Presentation()
-    slide1(prs)
 
-    slide000(prs, company_data)
-    slide2(prs)
-    slide34(prs, slides_data)
-    slide34(prs, slides_data2)
-    slide5(prs)
-    slide6(prs)
-    slide7(prs)
-    slide8(prs)
-    slide9(prs)
+def get_financial_data():
+    symbols = {
+        "Hyzon Motors Inc.": "HYZN",
+        "Energy Vault Holdings, Inc.": "NRGV",
+        "Hyundai Motor Company": "HYMTF",
+        "Toyota Motor Corporation": "TM",
+        "Cummins Inc.": "CMI"
+    }
+
+    end_date = datetime.now()
+    start_date_week = end_date - timedelta(weeks=1)
+    start_date_month = end_date - timedelta(weeks=4)
+
+    data = []
+
+    for company_name, symbol in symbols.items():
+        stock = yf.Ticker(symbol)
+        hist = stock.history(period="1mo")
+        
+        if not hist.empty:
+            current_price = hist['Close'].iloc[-1]
+            price_week_ago = hist.loc[hist.index >= start_date_week.strftime('%Y-%m-%d')]['Close'].iloc[0] if not hist.loc[hist.index >= start_date_week.strftime('%Y-%m-%d')].empty else None
+            price_month_ago = hist.loc[hist.index >= start_date_month.strftime('%Y-%m-%d')]['Close'].iloc[0] if not hist.loc[hist.index >= start_date_month.strftime('%Y-%m-%d')].empty else None
+            
+            change_week = ((current_price - price_week_ago) / price_week_ago) * 100 if price_week_ago else None
+            change_month = ((current_price - price_month_ago) / price_month_ago) * 100 if price_month_ago else None
+            
+            market_cap_m = stock.info.get('marketCap', 0) / 1e6 if stock.info.get('marketCap') else None
+            shares_outstanding = stock.info.get('sharesOutstanding', 0)
+            
+            data.append({
+                "Company Name": company_name,
+                "Ticker": symbol,
+                "Current Price": current_price,
+                "Price 1 Week Ago": price_week_ago,
+                "Price 1 Month Ago": price_month_ago,
+                "Change in Price (%) Week on Week": change_week,
+                "Change in Price (%) 1 Month Ago": change_month,
+                "Market Cap (M)": market_cap_m,
+                "Number of Shares": shares_outstanding
+            })
+        else:
+            print(f"No data found for {symbol}, it may be delisted or unavailable.")
+
+    # Ensure data is returned
+    if not data:
+        print("No financial data was retrieved.")
+    return data
+          
+def generate_ppt(slides_data, slides_data2):
+    prs = Presentation()
+    title_slide(prs)
+    
+    news_slide(prs, slides_data)
+    news_slide(prs, slides_data2)
+    
+    financial_data = get_financial_data()
+    comp_slide(prs, financial_data)
+    
+    commodities_slide(prs)
+    project_slide(prs)
+    grants_slide(prs)
+    disclaimer_slide(prs)
+    references_slide(prs)
     file_path = 'Monthly_Reports/Monthly_Report.pptx'
     prs.save(file_path)
 
@@ -664,9 +735,7 @@ def main():
     slides_data = Spider1.slides_data
     slides_data2 = Spider2.slides_data
     
-    company_data = pd.read_csv("company_data.csv").to_dict("records")
-    
-    generate_ppt(slides_data, slides_data2, company_data)
+    generate_ppt(slides_data, slides_data2)
     
 if __name__ == "__main__":
     main()
